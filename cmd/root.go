@@ -3,7 +3,7 @@ package cmd
 import (
 	"bytes"
 	"fmt"
-	"os"
+	"log"
 	"os/exec"
 
 	"github.com/spf13/cobra"
@@ -22,8 +22,7 @@ var RootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		err := env.SetEnvs(args[0])
 		if err != nil {
-			fmt.Printf("set env vars error: %s", err)
-			os.Exit(1)
+			log.Fatal("set env vars error: " + err.Error())
 		}
 		//todo: args
 		var childArgs = []string{}
@@ -35,8 +34,7 @@ var RootCmd = &cobra.Command{
 		command.Stdout = &out
 		err = command.Run()
 		if err != nil {
-			fmt.Printf("execute child program error: %s", err)
-			os.Exit(1)
+			log.Fatal("execute child program error: " + err.Error())
 		}
 		fmt.Printf("%s", out.String())
 	},
